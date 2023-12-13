@@ -13,4 +13,6 @@ public class ServiceTest {
     public Mono<Crypto> getCryptoBySymbol(String symbol) {
         return cryptoRepo.findBySymbol(symbol);
     }
+
+
 }

@@ -1,7 +1,8 @@
-package pl.schodowski.CryptoPriceAlert;
+package pl.schodowski.CryptoPriceAlert.entities;
 
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
+import pl.schodowski.CryptoPriceAlert.entities.Crypto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

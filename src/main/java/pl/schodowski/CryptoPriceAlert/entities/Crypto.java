@@ -1,4 +1,4 @@
-package pl.schodowski.CryptoPriceAlert;
+package pl.schodowski.CryptoPriceAlert.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

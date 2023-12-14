@@ -1,7 +1,9 @@
-package pl.schodowski.CryptoPriceAlert;
+package pl.schodowski.CryptoPriceAlert.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.schodowski.CryptoPriceAlert.entities.Crypto;
+import pl.schodowski.CryptoPriceAlert.entities.CryptoRepo;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package pl.schodowski.CryptoPriceAlert;
+package pl.schodowski.CryptoPriceAlert.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

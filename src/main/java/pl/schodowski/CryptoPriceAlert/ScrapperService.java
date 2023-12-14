@@ -33,6 +33,10 @@ public class ScrapperService {
 
 //todo jezeli któryś element pusty to weź z drugiego źródła
 
+            System.out.println(priceByHTML.text());
+            System.out.println(marketCapByHTML.text());
+            System.out.println(volume24hByHTML.text());
+
             if(priceByHTML != null && marketCapByHTML != null && volume24hByHTML != null) {
                 crypto.setTotalVolume(extractVolume(volume24hByHTML.text()));
                 crypto.setPrice(extractPrice(priceByHTML.text()));
@@ -49,7 +53,15 @@ public class ScrapperService {
 
     }
 
-    private float extractVolume(String value) {
+
+    public float extractPrice(String value) {
+        String priceText = value.replaceAll("[^\\d.,]+", "");
+        priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
+        return Float.parseFloat(priceText);
+    }
+
+
+    public float extractVolume(String value) {
         if (value.endsWith("B")) {
             String numberStr = value.substring(0, value.length() - 1);
             return Float.parseFloat(numberStr ) * 1000;
@@ -62,14 +74,7 @@ public class ScrapperService {
     }
 
 
-    private float extractPrice(String value) {
-        String priceText = value.replaceAll("[^\\d.,]+", "");
-        priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
-        return Float.parseFloat(priceText);
-    }
-
-
-    private BigDecimal extractMarketCap(String value) {
+    public BigDecimal extractMarketCap(String value) {
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(value);
         StringBuilder numberBuilder = new StringBuilder();

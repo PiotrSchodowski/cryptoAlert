@@ -14,7 +14,7 @@ public class ActualizationService {
     public void actualizeCrypto() {
 
         Flux<Crypto> allCrypto = cryptoRepo.findAll();
-        allCrypto.map(Crypto::getName).doOnNext(scrapperService::getAssetPriceByName).blockLast();
+        allCrypto.doOnNext(scrapperService::pushCryptoToUpdate).blockLast();
 
     }
 }

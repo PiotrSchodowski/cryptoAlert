@@ -24,6 +24,6 @@ public class Crypto {
     private long marketCap;
 
     @JsonProperty("total_volume")
-    private long totalVolume;
+    private float totalVolume;
 
 }

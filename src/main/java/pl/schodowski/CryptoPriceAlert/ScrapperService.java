@@ -17,55 +17,66 @@ public class ScrapperService {
 
     private final CompareService compareService;
 
-    public void getAssetPriceByName(String name) {
+    public void pushCryptoToUpdate(Crypto crypto) {
 
-        Crypto crypto = new Crypto();
-        String formattedName = name.replace(" ", "-");
+        String formattedName = crypto.getName().replace(" ", "-");
+        String urlCoinMarket = "https://coinmarketcap.com/currencies/" + formattedName.toLowerCase();
+        String urlCryptoSlate = "https://cryptoslate.com/coins/" + formattedName.toLowerCase();
 
-        String url = "https://coinmarketcap.com/currencies/" + formattedName.toLowerCase();
+        try {
+            Document htmlCoinMarket = Jsoup.connect(urlCoinMarket).get();
+            Document htmlCryptoSlate = Jsoup.connect(urlCryptoSlate).get();
 
-        try{
-            Document document = Jsoup.connect(url).get();
+            Element priceByHTML = htmlCoinMarket.selectFirst("span.sc-f70bb44c-0.jxpCgO.base-text");
+            Element marketCapByHTML = htmlCoinMarket.selectFirst("dd.sc-f70bb44c-0");
+            Element volume24hByHTML = htmlCryptoSlate.selectFirst("span.holepunch.holepunch-coin_24h_volume_usd");
 
-            Element priceByHTML = document.selectFirst("span.sc-f70bb44c-0.jxpCgO.base-text");
-            Element marketCapByHTML = document.selectFirst("dd.sc-f70bb44c-0");
+//todo jezeli któryś element pusty to weź z drugiego źródła
 
-            float priceAfter = 0;
-            BigDecimal marketCapAfter = BigDecimal.valueOf(0);
-
-            if (priceByHTML != null) {
-                String priceText = priceByHTML.text().replaceAll("[^\\d.,]+", "");
-                priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
-                priceAfter = Float.parseFloat(priceText);
+            if(priceByHTML != null && marketCapByHTML != null && volume24hByHTML != null) {
+                crypto.setTotalVolume(extractVolume(volume24hByHTML.text()));
+                crypto.setPrice(extractPrice(priceByHTML.text()));
+                crypto.setMarketCap(extractMarketCap(marketCapByHTML.text()).longValue());
             }
 
-            if (marketCapByHTML != null) {
-                String marketCapText = marketCapByHTML.text();
-                Pattern pattern = Pattern.compile("\\d+");
-                Matcher matcher = pattern.matcher(marketCapText);
-                StringBuilder numberBuilder = new StringBuilder();
-                while (matcher.find()) {
-                    numberBuilder.append(matcher.group());
-                }
-                String trimmedMarketCap = numberBuilder.toString().substring(3);
-                marketCapAfter = new BigDecimal(trimmedMarketCap);
-            }
-
-//            System.out.println(name);
-//            System.out.println("Price: " + priceAfter);
-//            System.out.println("Market cap: " + marketCapAfter);
-
-            crypto.setName(name);
-            crypto.setPrice(priceAfter);
-            crypto.setMarketCap(marketCapAfter.longValue());
-
-
+            System.out.println(crypto);
             compareService.compareCrypto(crypto);
 
 
-        }catch (IOException e) {
-            throw new RuntimeException("Error fetching asset price for name " + name, e);
+        } catch (IOException e) {
+            throw new RuntimeException("Error fetching asset price for name " + crypto.getName(), e);
         }
 
+    }
+
+    private float extractVolume(String value) {
+        if (value.endsWith("B")) {
+            String numberStr = value.substring(0, value.length() - 1);
+            return Float.parseFloat(numberStr ) * 1000;
+        }
+        if (value.endsWith("M")) {
+            String numberStr = value.substring(0, value.length() - 1);
+            return Float.parseFloat(numberStr);
+        }
+        throw new IllegalArgumentException("Invalid input format: " + value);
+    }
+
+
+    private float extractPrice(String value) {
+        String priceText = value.replaceAll("[^\\d.,]+", "");
+        priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
+        return Float.parseFloat(priceText);
+    }
+
+
+    private BigDecimal extractMarketCap(String value) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(value);
+        StringBuilder numberBuilder = new StringBuilder();
+        while (matcher.find()) {
+            numberBuilder.append(matcher.group());
+        }
+        String trimmedMarketCap = numberBuilder.toString().substring(3);
+        return new BigDecimal(trimmedMarketCap);
     }
 }

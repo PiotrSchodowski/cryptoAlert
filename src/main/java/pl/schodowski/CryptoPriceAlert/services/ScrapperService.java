@@ -64,7 +64,7 @@ public class ScrapperService {
         while (matcher.find()) {
             numberBuilder.append(matcher.group());
         }
-        String trimmedMarketCap = numberBuilder.toString().substring(3);
+        String trimmedMarketCap = numberBuilder.substring(3);
         return new BigDecimal(trimmedMarketCap);
     }
 

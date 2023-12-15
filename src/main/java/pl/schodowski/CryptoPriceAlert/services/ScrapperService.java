@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class ScrapperService {
 
-//    private final CompareService compareService;
+    private final CompareService compareService;
 
     public boolean pushCryptoToUpdate(Crypto crypto) {
 
@@ -31,7 +31,7 @@ public class ScrapperService {
         crypto.setPrice(extractPrice(priceByHTML.text()));
         crypto.setMarketCap(extractMarketCap(marketCapByHTML.text()).longValue());
 
-//        compareService.compareCrypto(crypto);
+        compareService.compareManager(crypto);
 
         return true;
     }

@@ -14,11 +14,10 @@ public class ActualizationService {
     private final CryptoRepo cryptoRepo;
     private final ScrapperService scrapperService;
 
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = 500000)
     public void actualizeCrypto() {
 
         Flux<Crypto> allCrypto = cryptoRepo.findAll();
         allCrypto.doOnNext(scrapperService::pushCryptoToUpdate).blockLast();
-
     }
 }

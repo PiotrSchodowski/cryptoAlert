@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
-import pl.schodowski.CryptoPriceAlert.entities.Crypto;
+import pl.schodowski.CryptoPriceAlert.repo.Crypto;
 
 import java.io.IOException;
 import java.math.BigDecimal;

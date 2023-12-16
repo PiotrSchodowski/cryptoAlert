@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import pl.schodowski.CryptoPriceAlert.entities.Crypto;
+import pl.schodowski.CryptoPriceAlert.repo.Crypto;
 import pl.schodowski.CryptoPriceAlert.services.ScrapperService;
 
 import org.jsoup.nodes.Element;

@@ -3,8 +3,8 @@ package pl.schodowski.CryptoPriceAlert.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pl.schodowski.CryptoPriceAlert.entities.Crypto;
-import pl.schodowski.CryptoPriceAlert.entities.CryptoRepo;
+import pl.schodowski.CryptoPriceAlert.repo.Crypto;
+import pl.schodowski.CryptoPriceAlert.repo.CryptoRepo;
 import reactor.core.publisher.Flux;
 
 @Service

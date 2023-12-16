@@ -2,8 +2,9 @@ package pl.schodowski.CryptoPriceAlert.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schodowski.CryptoPriceAlert.entities.Crypto;
-import pl.schodowski.CryptoPriceAlert.entities.CryptoRepo;
+import pl.schodowski.CryptoPriceAlert.exceptions.CryptoPriceAlertException;
+import pl.schodowski.CryptoPriceAlert.repo.Crypto;
+import pl.schodowski.CryptoPriceAlert.repo.CryptoRepo;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -20,14 +21,16 @@ public class CompareService {
                             compareCryptoPrice(cryptoAfterScrapping, cryptoFromDatabase);
                         },
                         error -> {
-                            System.err.println("Error retrieving crypto from the database: " + error.getMessage());
+                            throw new CryptoPriceAlertException("Error retrieving crypto from the database", true);
                         }
                 );
     }
 
+
     public Mono<Crypto> returnCryptoFromDatabase(Crypto cryptoAfterScrapping) {
         return cryptoRepo.findByName(cryptoAfterScrapping.getName());
     }
+
 
     public void compareCryptoPrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
 
@@ -36,34 +39,25 @@ public class CompareService {
         } else if (cryptoFromDatabase.getPrice() > cryptoAfterScrapping.getPrice()) {
             manageChangingDataService.manageDecreasePrice(cryptoAfterScrapping, cryptoFromDatabase);
         } else {
-            manageChangingDataService.manageNoChangePrice(cryptoAfterScrapping, cryptoFromDatabase);
+            manageChangingDataService.manageNoChangePrice(cryptoFromDatabase);
+            return;
         }
-
         updateCryptoToDatabase(cryptoAfterScrapping);
     }
 
+
     public void updateCryptoToDatabase(Crypto cryptoAfterScrapping) {
         returnCryptoFromDatabase(cryptoAfterScrapping)
-                .subscribe(
-                        cryptoFromDatabase -> {
-                            cryptoFromDatabase.setSymbol(cryptoAfterScrapping.getSymbol());
-                            cryptoFromDatabase.setPrice(cryptoAfterScrapping.getPrice());
-                            cryptoFromDatabase.setMarketCap(cryptoAfterScrapping.getMarketCap());
-                            cryptoFromDatabase.setTotalVolume(cryptoAfterScrapping.getTotalVolume());
-
-                            cryptoRepo.save(cryptoFromDatabase)
-                                    .subscribe(
-                                            savedCrypto -> {
-                                                System.out.println("Updated data in the database for " + savedCrypto.getName());
-                                            },
-                                            error -> {
-                                                System.err.println("Error updating data in the database: " + error.getMessage());
-                                            }
-                                    );
-                        },
-                        error -> {
-                            System.err.println("Error retrieving crypto from the database: " + error.getMessage());
-                        }
-                );
+                .flatMap(cryptoFromDatabase -> {
+                    cryptoFromDatabase.setSymbol(cryptoAfterScrapping.getSymbol());
+                    cryptoFromDatabase.setPrice(cryptoAfterScrapping.getPrice());
+                    cryptoFromDatabase.setMarketCap(cryptoAfterScrapping.getMarketCap());
+                    cryptoFromDatabase.setTotalVolume(cryptoAfterScrapping.getTotalVolume());
+                    return cryptoRepo.save(cryptoFromDatabase);
+                })
+                .doOnError(error -> {
+                    throw new CryptoPriceAlertException("Error updating crypto in the database", true);
+                })
+                .subscribe();
     }
 }

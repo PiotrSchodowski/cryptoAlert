@@ -2,7 +2,7 @@ package pl.schodowski.CryptoPriceAlert.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.schodowski.CryptoPriceAlert.entities.Crypto;
+import pl.schodowski.CryptoPriceAlert.repo.Crypto;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class ManageChangingDataService {
         );
     }
 
-    public void manageNoChangePrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
+    public void manageNoChangePrice(Crypto cryptoFromDatabase) {
         System.out.println("Price of "
                 + cryptoFromDatabase.getName()
                 + " has not changed!");

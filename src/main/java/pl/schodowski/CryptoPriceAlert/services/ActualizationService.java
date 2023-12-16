@@ -14,7 +14,7 @@ public class ActualizationService {
     private final CryptoRepo cryptoRepo;
     private final ScrapperService scrapperService;
 
-    @Scheduled(fixedRate = 500000)
+    @Scheduled(fixedRate = 200000)
     public void actualizeCrypto() {
 
         Flux<Crypto> allCrypto = cryptoRepo.findAll();

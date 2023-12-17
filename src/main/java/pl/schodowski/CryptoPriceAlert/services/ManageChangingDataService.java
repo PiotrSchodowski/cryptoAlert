@@ -1,7 +1,9 @@
 package pl.schodowski.CryptoPriceAlert.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import pl.schodowski.CryptoPriceAlert.exceptions.CryptoPriceAlertException;
 import pl.schodowski.CryptoPriceAlert.repo.Crypto;
 
 @Service
@@ -14,37 +16,56 @@ public class ManageChangingDataService {
     float CHANGE_PERCENTAGE_VALUE = 0.1f;   //todo do application.properties
     float sizePriceOfChange;
 
-    public void manageIncreasePrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
+    public ResponseEntity<String> manageIncreasePrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
 
-        sizePriceOfChange = calculateService.calculatePercentageChange(cryptoFromDatabase.getPrice(), cryptoAfterScrapping.getPrice());
+        sizePriceOfChange = calculateService.calculatePercentageChange(
+                cryptoFromDatabase.getPrice(),
+                cryptoAfterScrapping.getPrice());
+
         if (sizePriceOfChange > CHANGE_PERCENTAGE_VALUE) {
-            System.out.println("CRYPTO-ALERT WAS SEND!");
-            smsService.sendSMS("$$$ CRYPTO-ALERT $$$   "
+
+            String wholeMessage = "$$$ CRYPTO-ALERT $$$ "
                     + cryptoFromDatabase.getName()
                     + " price is rising: "
                     + sizePriceOfChange
-                    + "% in just 5 minutes!");
+                    + "% in just 5 minutes!";
+            smsService.sendSMS(wholeMessage);
+            return ResponseEntity.ok(wholeMessage);
+        } else {
+            throw new CryptoPriceAlertException("Price of "
+                    + cryptoFromDatabase.getName()
+                    + " has not changed!");
         }
-
     }
 
 
-    public void manageDecreasePrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
+    public ResponseEntity<String> manageDecreasePrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
 
-        sizePriceOfChange = calculateService.calculatePercentageChange(cryptoFromDatabase.getPrice(), cryptoAfterScrapping.getPrice());
+        sizePriceOfChange = calculateService.calculatePercentageChange(
+                cryptoFromDatabase.getPrice(),
+                cryptoAfterScrapping.getPrice());
+
         if (sizePriceOfChange < (-CHANGE_PERCENTAGE_VALUE)) {
-            System.out.println("CRYPTO-ALERT WAS SEND!");
-            smsService.sendSMS("$$$ CRYPTO-ALERT $$$    "
+
+            String wholeMessage = "$$$ CRYPTO-ALERT $$$ "
                     + cryptoFromDatabase.getName()
                     + " price is falling: "
                     + sizePriceOfChange
-                    + "% in just 5 minutes!");
+                    + "% in just 5 minutes!";
+
+            smsService.sendSMS(wholeMessage);
+            return ResponseEntity.ok(wholeMessage);
+        }
+        else {
+            throw new CryptoPriceAlertException("Price of "
+                    + cryptoFromDatabase.getName()
+                    + " has not changed!");
         }
     }
 
 
-    public void manageNoChangePrice(Crypto cryptoFromDatabase) {
-        System.out.println("Price of "
+    public ResponseEntity<String> manageNoChangePrice(Crypto cryptoFromDatabase) {
+        return ResponseEntity.ok("Price of "
                 + cryptoFromDatabase.getName()
                 + " has not changed!");
     }

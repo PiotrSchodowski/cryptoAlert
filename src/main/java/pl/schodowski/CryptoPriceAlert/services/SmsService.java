@@ -2,6 +2,7 @@ package pl.schodowski.CryptoPriceAlert.services;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.schodowski.CryptoPriceAlert.exceptions.CryptoPriceAlertException;
 
@@ -18,7 +19,7 @@ public class SmsService {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
     }
 
-    public boolean sendSMS(String message) {
+    public ResponseEntity<String> sendSMS(String message) {
         try {
             Message.creator(
                             new com.twilio.type.PhoneNumber(RECEIVER_PHONE_NUMBER),
@@ -26,7 +27,7 @@ public class SmsService {
                             message)
                     .create();
             System.out.println("SMS sent successfully: " + message);
-            return true;
+            return ResponseEntity.ok("SMS sent successfully: " + message);
         } catch (Exception e) {
             throw new CryptoPriceAlertException("SMS sending failed: " + e.getMessage());
         }

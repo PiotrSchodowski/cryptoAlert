@@ -9,11 +9,12 @@ import java.math.RoundingMode;
 public class CalculateService {
 
     public float calculatePercentageChange(float priceSmaller, float priceBigger) {
+        if (priceSmaller == 0) return 0;
+
         BigDecimal resultFromDivision = convertToBigDecimal(priceBigger - priceSmaller)
                 .divide(convertToBigDecimal(priceSmaller),
                         4, RoundingMode.HALF_UP);
         return resultFromDivision.multiply(convertToBigDecimal(100)).floatValue();
-
     }
 
     public BigDecimal convertToBigDecimal(float value) {

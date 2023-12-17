@@ -13,6 +13,7 @@ public class ActualizationService {
 
     private final CryptoRepo cryptoRepo;
     private final ScrapperService scrapperService;
+
     private final int INTERVAL = 500000;   //todo do application.properties
 
     @Scheduled(fixedRate = INTERVAL)

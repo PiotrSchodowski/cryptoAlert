@@ -68,19 +68,39 @@ public class ManageChangingDataServiceTest {
     }
 
     @Test
-    void shouldReturnValidMessageWhenPriceNotChange(){
+    void shouldReturnValidMessageWhenVolumeMoreDecreaseChange(){
 
         Crypto cryptoAfterScrapping = new Crypto();
         cryptoAfterScrapping.setName("Bitcoin");
-        cryptoAfterScrapping.setPrice(1000f);
+        cryptoAfterScrapping.setTotalVolume(1000f);
 
         Crypto cryptoFromDatabase = new Crypto();
         cryptoFromDatabase.setName("Bitcoin");
-        cryptoFromDatabase.setPrice(1000f);
+        cryptoFromDatabase.setTotalVolume(900f);
 
+        when(calculateService.calculatePercentageChange(cryptoFromDatabase.getTotalVolume(), cryptoAfterScrapping.getTotalVolume())).thenReturn(-10f);
+        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!"));
 
-        ResponseEntity<String> response  = manageChangingDataService.manageNoChangePrice(cryptoFromDatabase);
-        Assertions.assertThat(response).isEqualTo(ResponseEntity.ok("Price of Bitcoin has not changed!"));
+        ResponseEntity<String> response = manageChangingDataService.manageDecreaseVolume(cryptoAfterScrapping, cryptoFromDatabase);
+        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!");
+    }
+
+    @Test
+    void shouldReturnValidMessageWhenVolumeMoreIncreaseChange(){
+
+        Crypto cryptoAfterScrapping = new Crypto();
+        cryptoAfterScrapping.setName("Bitcoin");
+        cryptoAfterScrapping.setTotalVolume(1000f);
+
+        Crypto cryptoFromDatabase = new Crypto();
+        cryptoFromDatabase.setName("Bitcoin");
+        cryptoFromDatabase.setTotalVolume(1100f);
+
+        when(calculateService.calculatePercentageChange(cryptoFromDatabase.getTotalVolume(), cryptoAfterScrapping.getTotalVolume())).thenReturn(10f);
+        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!"));
+
+        ResponseEntity<String> response = manageChangingDataService.manageIncreaseVolume(cryptoAfterScrapping, cryptoFromDatabase);
+        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!");
     }
 
 }

@@ -13,11 +13,12 @@ public class ActualizationService {
 
     private final CryptoRepo cryptoRepo;
     private final ScrapperService scrapperService;
+    private final int INTERVAL = 500000;   //todo do application.properties
 
-    @Scheduled(fixedRate = 200000)
+    @Scheduled(fixedRate = INTERVAL)
     public void actualizeCrypto() {
 
         Flux<Crypto> allCrypto = cryptoRepo.findAll();
-        allCrypto.doOnNext(scrapperService::pushCryptoToUpdate).blockLast();
+        allCrypto.doOnNext(scrapperService::pushCryptoByNameToUpdate).blockLast();
     }
 }

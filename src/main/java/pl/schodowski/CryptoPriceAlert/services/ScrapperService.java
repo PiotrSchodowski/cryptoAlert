@@ -18,7 +18,7 @@ public class ScrapperService {
 
     private final CompareService compareService;
 
-    public boolean pushCryptoToUpdate(Crypto crypto) {
+    public boolean pushCryptoByNameToUpdate(Crypto crypto) {
 
         String urlCoinMarket = "https://coinmarketcap.com/currencies/" + formatName(crypto.getName());
         String urlCryptoSlate = "https://cryptoslate.com/coins/" + formatName(crypto.getName());
@@ -34,38 +34,6 @@ public class ScrapperService {
         compareService.compareManager(crypto);
 
         return true;
-    }
-
-
-    public float extractPrice(String value) {
-        String priceText = value.replaceAll("[^\\d.,]+", "");
-        priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
-        return Float.parseFloat(priceText);
-    }
-
-
-    public float extractVolume(String value) {
-        if (value.endsWith("B")) {
-            String numberStr = value.substring(0, value.length() - 1);
-            return Float.parseFloat(numberStr) * 1000;
-        } else if (value.endsWith("M")) {
-            String numberStr = value.substring(0, value.length() - 1);
-            return Float.parseFloat(numberStr);
-        }else{
-            throw new IllegalArgumentException("Invalid input format: " + value);
-        }
-    }
-
-
-    public BigDecimal extractMarketCap(String value) {
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(value);
-        StringBuilder numberBuilder = new StringBuilder();
-        while (matcher.find()) {
-            numberBuilder.append(matcher.group());
-        }
-        String trimmedMarketCap = numberBuilder.substring(3);
-        return new BigDecimal(trimmedMarketCap);
     }
 
 
@@ -101,6 +69,38 @@ public class ScrapperService {
         } catch (IOException e) {
             throw new RuntimeException("Error fetching asset price for urls", e);
         }
+    }
+
+
+    public float extractPrice(String value) {
+        String priceText = value.replaceAll("[^\\d.,]+", "");
+        priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
+        return Float.parseFloat(priceText);
+    }
+
+
+    public float extractVolume(String value) {
+        if (value.endsWith("B")) {
+            String numberStr = value.substring(0, value.length() - 1);
+            return Float.parseFloat(numberStr) * 1000;
+        } else if (value.endsWith("M")) {
+            String numberStr = value.substring(0, value.length() - 1);
+            return Float.parseFloat(numberStr);
+        }else{
+            throw new IllegalArgumentException("Invalid input format: " + value);
+        }
+    }
+
+
+    public BigDecimal extractMarketCap(String value) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(value);
+        StringBuilder numberBuilder = new StringBuilder();
+        while (matcher.find()) {
+            numberBuilder.append(matcher.group());
+        }
+        String trimmedMarketCap = numberBuilder.substring(3);
+        return new BigDecimal(trimmedMarketCap);
     }
 
     public String formatName(String name) {

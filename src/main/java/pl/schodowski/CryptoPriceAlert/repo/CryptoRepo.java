@@ -8,7 +8,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface CryptoRepo extends ReactiveMongoRepository<Crypto, String> {
 
-    Mono<Crypto> findBySymbol(String symbol);
     Mono<Crypto> findByName(String name);
     Flux<Crypto> findAll();
 }

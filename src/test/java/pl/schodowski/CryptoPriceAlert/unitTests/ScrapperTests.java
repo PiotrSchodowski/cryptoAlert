@@ -33,7 +33,7 @@ public class ScrapperTests {
 
         Crypto crypto = new Crypto();
         crypto.setName("Bitcoin");
-        assertTrue(scrapperService.pushCryptoToUpdate(crypto));
+        assertTrue(scrapperService.pushCryptoByNameToUpdate(crypto));
     }
 
     @Test

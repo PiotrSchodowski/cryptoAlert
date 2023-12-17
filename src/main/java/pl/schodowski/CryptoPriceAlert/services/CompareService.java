@@ -15,7 +15,7 @@ public class CompareService {
     private final ManageChangingDataService manageChangingDataService;
 
     public void compareManager(Crypto cryptoAfterScrapping) {
-        returnCryptoFromDatabase(cryptoAfterScrapping)
+        returnCryptoByNameFromDatabase(cryptoAfterScrapping)
                 .subscribe(
                         cryptoFromDatabase -> {
                             compareCryptoPrice(cryptoAfterScrapping, cryptoFromDatabase);
@@ -27,7 +27,7 @@ public class CompareService {
     }
 
 
-    public Mono<Crypto> returnCryptoFromDatabase(Crypto cryptoAfterScrapping) {
+    public Mono<Crypto> returnCryptoByNameFromDatabase(Crypto cryptoAfterScrapping) {
         return cryptoRepo.findByName(cryptoAfterScrapping.getName());
     }
 
@@ -47,7 +47,7 @@ public class CompareService {
 
 
     public void updateCryptoToDatabase(Crypto cryptoAfterScrapping) {
-        returnCryptoFromDatabase(cryptoAfterScrapping)
+        returnCryptoByNameFromDatabase(cryptoAfterScrapping)
                 .flatMap(cryptoFromDatabase -> {
                     cryptoFromDatabase.setSymbol(cryptoAfterScrapping.getSymbol());
                     cryptoFromDatabase.setPrice(cryptoAfterScrapping.getPrice());

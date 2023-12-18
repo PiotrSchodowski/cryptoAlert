@@ -65,8 +65,6 @@ public class ScrapperService {
             if (elements.size() >= 2) {
                 element = elements.get(1);
             }
-
-            System.out.println(element.text());
             return element;
 
         } catch (IOException e) {

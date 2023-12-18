@@ -11,7 +11,7 @@ import pl.schodowski.CryptoPriceAlert.exceptions.CryptoPriceAlertException;
 public class SmsService {
 
     private final String ACCOUNT_SID = "ACf690f10d89ab0ca7d80da14e696f153c";
-    private final String AUTH_TOKEN = "67c77f35a3cc91ca6ba38c852a45df77";
+    private final String AUTH_TOKEN = "b43ef950564e1f3b25bc3f4bae6c008a";
     private final String TWILIO_PHONE_NUMBER = "+12058585764";
     private final String RECEIVER_PHONE_NUMBER = "+48798226220";
 

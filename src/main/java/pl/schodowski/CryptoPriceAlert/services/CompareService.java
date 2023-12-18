@@ -32,7 +32,7 @@ public class CompareService {
     }
 
     private void compareCryptoVolume(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
-        System.out.println(cryptoFromDatabase.getName() + "VOLUME BEFORE: " + cryptoFromDatabase.getTotalVolume() + " " + " AFTER: "+ cryptoAfterScrapping.getTotalVolume());
+        System.out.println(cryptoFromDatabase.getName() + " VOLUME BEFORE: " + cryptoFromDatabase.getTotalVolume() + " " + " AFTER: "+ cryptoAfterScrapping.getTotalVolume());
 
         if (cryptoFromDatabase.getTotalVolume() < cryptoAfterScrapping.getTotalVolume()) {
             manageChangingDataService.manageIncreaseVolume(cryptoAfterScrapping, cryptoFromDatabase);
@@ -47,7 +47,7 @@ public class CompareService {
 
 
     public void compareCryptoPrice(Crypto cryptoAfterScrapping, Crypto cryptoFromDatabase) {
-        System.out.println("CRYPTO PRICE BEFORE: " + cryptoFromDatabase.getPrice() + " " + "CRYPTO PRICE AFTER: "+ cryptoAfterScrapping.getPrice());
+        System.out.println(cryptoFromDatabase.getName() + " PRICE BEFORE: " + cryptoFromDatabase.getPrice() + " " + " AFTER: "+ cryptoAfterScrapping.getPrice());
 
         if (cryptoFromDatabase.getPrice() < cryptoAfterScrapping.getPrice()) {
             manageChangingDataService.manageIncreasePrice(cryptoAfterScrapping, cryptoFromDatabase);

@@ -14,9 +14,9 @@ public class ActualizationService {
     private final CryptoRepo cryptoRepo;
     private final ScrapperService scrapperService;
 
-    private final int INTERVAL = 500000;   //todo do application.properties
+    private final String INTERVAL = "0 */10 * * * *";   //todo do application.properties
 
-    @Scheduled(fixedRate = INTERVAL)
+    @Scheduled(cron = INTERVAL)
     public void actualizeCrypto() {
 
         Flux<Crypto> allCrypto = cryptoRepo.findAll();

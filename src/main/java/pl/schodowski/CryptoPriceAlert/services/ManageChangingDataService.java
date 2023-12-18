@@ -23,8 +23,6 @@ public class ManageChangingDataService {
                 cryptoFromDatabase.getPrice(),
                 cryptoAfterScrapping.getPrice());
 
-        System.out.println(CHANGE_PERCENTAGE_VALUE);
-
         if (sizePriceOfChange > CHANGE_PERCENTAGE_VALUE) {
 
             String wholeMessage = "$$$ CRYPTO-ALERT $$$ "
@@ -54,7 +52,7 @@ public class ManageChangingDataService {
                     + cryptoFromDatabase.getName()
                     + " price is falling: "
                     + sizePriceOfChange
-                    + "% in just 5 minutes!";
+                    + "% in just 10 minutes!";
 
             smsService.sendSMS(wholeMessage);
             return ResponseEntity.ok(wholeMessage);
@@ -78,7 +76,7 @@ public class ManageChangingDataService {
                     + cryptoFromDatabase.getName()
                     + " volume is rising: "
                     + sizePriceOfChange
-                    + "% in just 5 minutes!";
+                    + "% in just 10 minutes!";
 
             smsService.sendSMS(wholeMessage);
             return ResponseEntity.ok(wholeMessage);
@@ -101,7 +99,7 @@ public class ManageChangingDataService {
                     + cryptoFromDatabase.getName()
                     + " volume is falling: "
                     + sizePriceOfChange
-                    + "% in just 5 minutes!";
+                    + "% in just 10 minutes!";
 
             smsService.sendSMS(wholeMessage);
             return ResponseEntity.ok(wholeMessage);
@@ -114,7 +112,6 @@ public class ManageChangingDataService {
 
 
     public void manageNoChangePrice(Crypto cryptoFromDatabase) {
-        System.out.println(CHANGE_PERCENTAGE_VALUE);
         System.out.println(cryptoFromDatabase.getName() + " NO CHANGE PRICE");
     }
 

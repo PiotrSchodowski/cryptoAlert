@@ -43,7 +43,7 @@ public class ManageChangingDataServiceTest {
         cryptoFromDatabase.setPrice(1100f);
 
         when(calculateService.calculatePercentageChange(cryptoFromDatabase.getPrice(), cryptoAfterScrapping.getPrice())).thenReturn(10f);
-        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin price is rising: 10.0% in just 5 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin price is rising: 10.0% in just 5 minutes!"));
+        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin price is rising: 10.0% in just 10 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin price is rising: 10.0% in just 5 minutes!"));
 
         ResponseEntity<String> response = manageChangingDataService.manageIncreasePrice(cryptoAfterScrapping, cryptoFromDatabase);
         Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin price is rising: 10.0% in just 5 minutes!");
@@ -61,10 +61,10 @@ public class ManageChangingDataServiceTest {
         cryptoFromDatabase.setPrice(900f);
 
         when(calculateService.calculatePercentageChange(cryptoFromDatabase.getPrice(), cryptoAfterScrapping.getPrice())).thenReturn(-10f);
-        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin price is falling: -10.0% in just 5 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin price is falling: -10.0% in just 5 minutes!"));
+        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin price is falling: -10.0% in just 10 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin price is falling: -10.0% in just 5 minutes!"));
 
         ResponseEntity<String> response = manageChangingDataService.manageDecreasePrice(cryptoAfterScrapping, cryptoFromDatabase);
-        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin price is falling: -10.0% in just 5 minutes!");
+        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin price is falling: -10.0% in just 10 minutes!");
     }
 
     @Test
@@ -79,10 +79,10 @@ public class ManageChangingDataServiceTest {
         cryptoFromDatabase.setTotalVolume(900f);
 
         when(calculateService.calculatePercentageChange(cryptoFromDatabase.getTotalVolume(), cryptoAfterScrapping.getTotalVolume())).thenReturn(-10f);
-        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!"));
+        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 10 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!"));
 
         ResponseEntity<String> response = manageChangingDataService.manageDecreaseVolume(cryptoAfterScrapping, cryptoFromDatabase);
-        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 5 minutes!");
+        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin volume is falling: -10.0% in just 10 minutes!");
     }
 
     @Test
@@ -97,10 +97,10 @@ public class ManageChangingDataServiceTest {
         cryptoFromDatabase.setTotalVolume(1100f);
 
         when(calculateService.calculatePercentageChange(cryptoFromDatabase.getTotalVolume(), cryptoAfterScrapping.getTotalVolume())).thenReturn(10f);
-        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!"));
+        when(smsService.sendSMS("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 10 minutes!")).thenReturn(ResponseEntity.ok("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!"));
 
         ResponseEntity<String> response = manageChangingDataService.manageIncreaseVolume(cryptoAfterScrapping, cryptoFromDatabase);
-        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 5 minutes!");
+        Assertions.assertThat(response.getBody()).isEqualTo("$$$ CRYPTO-ALERT $$$ Bitcoin volume is rising: 10.0% in just 10 minutes!");
     }
 
 }

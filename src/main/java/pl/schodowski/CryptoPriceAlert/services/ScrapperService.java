@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import pl.schodowski.CryptoPriceAlert.repo.Crypto;
 
@@ -18,22 +19,60 @@ public class ScrapperService {
 
     private final CompareService compareService;
 
-    public boolean pushCryptoByNameToUpdate(Crypto crypto) {
+    public void pushCryptoByNameToUpdate(Crypto crypto) {
 
         String urlCoinMarket = "https://coinmarketcap.com/currencies/" + formatName(crypto.getName());
         String urlCryptoSlate = "https://cryptoslate.com/coins/" + formatName(crypto.getName());
+        String urlLiveCoinWatch = "https://www.livecoinwatch.com/price/" + crypto.getName() + "-" + crypto.getSymbol().toUpperCase();
 
         Element priceByHTML = getPriceByHTML(urlCoinMarket, urlCryptoSlate);
         Element marketCapByHTML = getMarketCapByHTML(urlCoinMarket);
-        Element volume24hByHTML = getVolume24hByHTML(urlCryptoSlate);
+        Element volume24hByLiveCoinWatch = getVolume24hByLiveCoinWatch(urlLiveCoinWatch);
 
-        crypto.setTotalVolume(extractVolume(volume24hByHTML.text()));
+        crypto.setTotalVolume(extractVolume(volume24hByLiveCoinWatch.text()));
         crypto.setPrice(extractPrice(priceByHTML.text()));
         crypto.setMarketCap(extractMarketCap(marketCapByHTML.text()).longValue());
 
         compareService.compareManager(crypto);
+    }
 
-        return true;
+
+    public String getForTest(String url) { //todo CLASS FOR TESTS
+        try {
+            Document document = Jsoup.connect(url).get();
+            Element element = document.selectFirst("span.price.no-grow");
+
+            Elements elements = document.select("span.price.no-grow");
+            if (elements.size() >= 2) {
+                element = elements.get(1);
+            }
+
+            System.out.println(element.text());
+            return element.text();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error fetching asset price for urls", e);
+        }
+    }
+
+
+    private Element getVolume24hByLiveCoinWatch(String url) {
+        try {
+            Document document = Jsoup.connect(url).get();
+            Element element = document.selectFirst("span.price.no-grow");
+
+            Elements elements = document.select("span.price.no-grow");
+            if (elements.size() >= 2) {
+                element = elements.get(1);
+            }
+
+            System.out.println(element.text());
+            return element;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error fetching asset price for urls", e);
+        }
+
     }
 
 
@@ -81,12 +120,12 @@ public class ScrapperService {
 
     public float extractVolume(String value) {
         if (value.endsWith("B")) {
-            String numberStr = value.substring(0, value.length() - 1);
+            String numberStr = value.substring(1, value.length() - 1);
             return Float.parseFloat(numberStr) * 1000;
         } else if (value.endsWith("M")) {
-            String numberStr = value.substring(0, value.length() - 1);
+            String numberStr = value.substring(1, value.length() - 1);
             return Float.parseFloat(numberStr);
-        }else{
+        } else {
             throw new IllegalArgumentException("Invalid input format: " + value);
         }
     }
@@ -103,7 +142,10 @@ public class ScrapperService {
         return new BigDecimal(trimmedMarketCap);
     }
 
+
     public String formatName(String name) {
         return name.replace(" ", "-").toLowerCase();
     }
 }
+
+

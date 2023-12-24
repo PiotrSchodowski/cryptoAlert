@@ -35,7 +35,7 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 
 4. **Run application**
    -  **Command Line:**  `gradle clean build`
--  **Run .jar file with command:**  `java -jar patch\file_name.jar`
+   -  **Run .jar file with command:**  `java -jar patch\file_name.jar`
 
 
 ## How it works

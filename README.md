@@ -25,13 +25,13 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 1. **Pull the project from the main branch**
 2. **Create shema `crypto` in your MongoDB**
 3. **Set up in `application.properties` file:**
-> MongoDB connection
+   - MongoDB connection
 
-> Data from `Twilio.com` (first you have to create account, there may be a free version)
+   -  Data from `Twilio.com` (first you have to create account, there may be a free version)
 
-> `values` - set change that interests you expressed as a percentage(default 0.5%)
+   -  `values` - set change that interests you expressed as a percentage(default 0.5%)
 
-> `interval` - set interval in milliseconds(default 10 minutes)
+   -  `interval` - set interval in milliseconds(default 10 minutes)
 
 4. **Run application**
  - **Command Line:**

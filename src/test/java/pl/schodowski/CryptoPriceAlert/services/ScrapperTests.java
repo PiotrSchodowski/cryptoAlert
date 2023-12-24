@@ -1,4 +1,4 @@
-package pl.schodowski.CryptoPriceAlert.unitTests;
+package pl.schodowski.CryptoPriceAlert.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

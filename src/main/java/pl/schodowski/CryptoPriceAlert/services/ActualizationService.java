@@ -19,7 +19,6 @@ public class ActualizationService {
     @Scheduled(cron = INTERVAL)
     public void actualizeCrypto() {
 
-        Flux<Crypto> allCrypto = cryptoRepo.findAll();
-        allCrypto.doOnNext(scrapperService::pushCryptoByNameToUpdate).blockLast();
+         cryptoRepo.findAll().doOnNext(scrapperService::pushCryptoByNameToUpdate).subscribe();
     }
 }

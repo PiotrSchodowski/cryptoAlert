@@ -1,5 +1,6 @@
 package pl.schodowski.CryptoPriceAlert.services;
 
+
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,7 +38,7 @@ public class ScrapperService {
     }
 
 
-    public String getForTest(String url) { //todo CLASS FOR TESTS
+    String getForTest(String url) {
         try {
             Document document = Jsoup.connect(url).get();
             Element element = document.selectFirst("span.price.no-grow");
@@ -56,7 +57,7 @@ public class ScrapperService {
     }
 
 
-    private Element getVolume24hByLiveCoinWatch(String url) {
+    Element getVolume24hByLiveCoinWatch(String url) {
         try {
             Document document = Jsoup.connect(url).get();
             Element element = document.selectFirst("span.price.no-grow");
@@ -74,7 +75,7 @@ public class ScrapperService {
     }
 
 
-    public Element getPriceByHTML(String urlCoinMarket, String urlCryptoSlate) {
+    Element getPriceByHTML(String urlCoinMarket, String urlCryptoSlate) {
         try {
             Document html = Jsoup.connect(urlCoinMarket).get();
             return html.selectFirst("span.sc-f70bb44c-0.jxpCgO.base-text");
@@ -89,7 +90,7 @@ public class ScrapperService {
     }
 
 
-    public Element getMarketCapByHTML(String urlCoinMarket) {
+    Element getMarketCapByHTML(String urlCoinMarket) {
         try {
             Document html = Jsoup.connect(urlCoinMarket).get();
             return html.selectFirst("dd.sc-f70bb44c-0");
@@ -99,7 +100,7 @@ public class ScrapperService {
     }
 
 
-    public Element getVolume24hByHTML(String urlCryptoSlate) {
+    Element getVolume24hByHTML(String urlCryptoSlate) {
         try {
             Document html = Jsoup.connect(urlCryptoSlate).get();
             return html.selectFirst("span.holepunch.holepunch-coin_24h_volume_usd");
@@ -109,14 +110,14 @@ public class ScrapperService {
     }
 
 
-    public float extractPrice(String value) {
+    float extractPrice(String value) {
         String priceText = value.replaceAll("[^\\d.,]+", "");
         priceText = priceText.replaceAll("(\\d),(\\d)", "$1$2");
         return Float.parseFloat(priceText);
     }
 
 
-    public float extractVolume(String value) {
+    float extractVolume(String value) {
         if (value.endsWith("B")) {
             String numberStr = value.substring(1, value.length() - 1);
             return Float.parseFloat(numberStr) * 1000;
@@ -129,7 +130,7 @@ public class ScrapperService {
     }
 
 
-    public BigDecimal extractMarketCap(String value) {
+    BigDecimal extractMarketCap(String value) {
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(value);
         StringBuilder numberBuilder = new StringBuilder();
@@ -141,7 +142,7 @@ public class ScrapperService {
     }
 
 
-    public String formatName(String name) {
+    String formatName(String name) {
         return name.replace(" ", "-").toLowerCase();
     }
 }

@@ -2,7 +2,6 @@ package pl.schodowski.CryptoPriceAlert.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,7 +19,7 @@ public class DataLoaderServiceTests {
     }
 
     @Test
-    void shouldReturnList(){
+    void shouldReturnList() {
         System.out.println(apiService.getCryptoListFromCoinGecko());
     }
 }

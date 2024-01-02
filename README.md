@@ -41,7 +41,7 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 ## How it works
 
 When u run application, it will start to download data from `CoinGecko.com` 
-and save it to database (default 10 cryptocurrencies largest in terms of capitalization).
+and save it to database (default 1 cryptocurrency largest in terms of capitalization).
 Then it will start to check if the price or volume
 of the cryptocurrency has changed by the value you set and if so, it will send you a message.
 

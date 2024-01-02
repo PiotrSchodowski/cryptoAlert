@@ -27,4 +27,5 @@ public class ApiService {
         ResponseEntity<Crypto[]> response = restTemplate.exchange(url, HttpMethod.GET, null, Crypto[].class);
         return Arrays.asList(Objects.requireNonNull(response.getBody()));
     }
+
 }

@@ -29,9 +29,11 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 
    -  Data from `Twilio.com` (first you have to create account, there may be a free version)
 
-   -  `values` - set change that interests you expressed as a percentage(default 0.5%)
+   -  `values` - set change that interests you expressed as a percentage for price and volume(default 10%)
 
    -  `interval` - set interval in milliseconds(default 10 minutes)
+
+   -  `selectedCrypto` - Provide the symbols of cryptocurrencies for which we should deliver data in alerts here.(default btc,eth,sol,avax,opt,arb,matic)
 
 4. **Run application**
    -  **Command Line:**  `gradle clean build`
@@ -41,8 +43,12 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 ## How it works
 
 When u run application, it will start to download data from `CoinGecko.com` 
-and save it to database (default 1 cryptocurrency largest in terms of capitalization).
+and save it to database selected by You.
 Then it will start to check if the price or volume
 of the cryptocurrency has changed by the value you set and if so, it will send you a message.
+
+![img.png](img.png)
+
+That's all. Thank you for your attention. 
 
 

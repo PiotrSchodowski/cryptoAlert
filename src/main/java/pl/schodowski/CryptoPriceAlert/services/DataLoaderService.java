@@ -44,6 +44,7 @@ public class DataLoaderService implements ApplicationListener<ContextRefreshedEv
                             System.out.println("Symbol: " + crypto.getSymbol());
                             System.out.println("Price: " + crypto.getPrice());
                             System.out.println("Market Cap: " + crypto.getMarketCap());
+                            crypto.setTotalVolume(crypto.getTotalVolume() / 1000000);
                             System.out.println("Total Volume: " + crypto.getTotalVolume());
 
                             cryptoRepo.save(crypto).subscribe(savedCrypto -> {
@@ -53,7 +54,6 @@ public class DataLoaderService implements ApplicationListener<ContextRefreshedEv
                     });
         }
     }
-
 
     private List<String> makeListOfCryptoFromApplicationProperties() {
         return Arrays.asList(cryptoList.split(","));

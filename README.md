@@ -33,7 +33,7 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 
    -  `interval` - set interval in milliseconds(default 10 minutes)
 
-   -  `selectedCrypto` - Provide the symbols of cryptocurrencies for which we should deliver data in alerts here.(default btc,eth,sol,avax,opt,arb,matic)
+   -  `selectedCrypto` - Provide the symbols of cryptocurrencies for which we should deliver data in alerts here.(default btc,eth)
 
 4. **Run application**
    -  **Command Line:**  `gradle clean build`
@@ -43,7 +43,7 @@ To Deploy Application on your computer, you need Java 17+ and Gradle:
 ## How it works
 
 When u run application, it will start to download data from `CoinGecko.com` 
-and save it to database selected by You.
+and save it to database coins selected by You.
 Then it will start to check if the price or volume
 of the cryptocurrency has changed by the value you set and if so, it will send you a message.
 
